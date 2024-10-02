@@ -7,7 +7,9 @@ source "https://rubygems.org"
 gem "jekyll-theme-yat", path: "."
 
 # Jekyll and its related dependencies
-gem "jekyll", ">= 3.5", "< 5.0"
+#gem "jekyll", ">= 3.5", "< 5.0"
+gem "jekyll", "4.2.0"  # Remplacez 4.2.0 par la version de Jekyll souhaitée
+
 gem "jekyll-feed", "~> 0.9"
 gem "jekyll-paginate", "~> 1.1"
 gem "jekyll-seo-tag", "~> 2.1"
