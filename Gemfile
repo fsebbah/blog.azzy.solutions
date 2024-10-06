@@ -21,3 +21,7 @@ gem "rake", ">= 12.0", "< 13.0"
 
 # Bundler is required and is compatible with versions >= 1.6 and < 3.0
 gem "bundler", ">= 1.6", "< 3.0"
+
+gem 'sassc', '~> 2.4', require: false
+
+gem "webrick", "~> 1.8"
