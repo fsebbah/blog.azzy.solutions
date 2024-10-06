@@ -29,15 +29,15 @@ jobs:
         run: |
           if [ "${{ github.ref }}" == "refs/heads/main" ]; then
             echo "JEKYLL_ENV=production" >> $GITHUB_ENV
-            echo "CNAME=blog.sample.com" >> $GITHUB_ENV
+            echo "CNAME=blog.azy.solutions" >> $GITHUB_ENV
             echo "JEKYLL_CONFIG=_config.yml,_config_prod.yml" >> $GITHUB_ENV
           elif [ "${{ github.ref }}" == "refs/heads/test" ]; then
             echo "JEKYLL_ENV=test" >> $GITHUB_ENV
-            echo "CNAME=test.blog.sample.com" >> $GITHUB_ENV
+            echo "CNAME=test.blog.azy.solutions" >> $GITHUB_ENV
             echo "JEKYLL_CONFIG=_config.yml,_config_test.yml" >> $GITHUB_ENV
           else
             echo "JEKYLL_ENV=development" >> $GITHUB_ENV
-            echo "CNAME=dev.blog.sample.com" >> $GITHUB_ENV
+            echo "CNAME=dev.blog.azy.solutions" >> $GITHUB_ENV
             echo "JEKYLL_CONFIG=_config.yml,_config_dev.yml" >> $GITHUB_ENV
           fi
 
