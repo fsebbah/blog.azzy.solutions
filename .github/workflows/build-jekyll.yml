@@ -47,7 +47,7 @@ jobs:
           provider: 'github'
           token: ${{ secrets.GITHUB_TOKEN }}  # Utilise ton Personal Access Token (PAT)
           repository: ''                      # Par défaut, le dépôt actuel
-          branch: 'gh-pages'                  # Branche de déploiement, ici gh-pages
+          branch:  ${{ env.DEPLOY_BRANCH }}   # Branche de déploiement, ici gh-pages
           jekyll_src: './'                    # Répertoire racine du projet Jekyll
           jekyll_cfg: ${{ env.JEKYLL_CONFIG }}  # Utilisation du fichier de config en fonction de l'environnement
           cname: ${{ env.CNAME }}              # CNAME selon l'environnement
