@@ -3,7 +3,9 @@ name: Github Pages
 on:
   push:
     branches:
-      - develop  # Here source code branch is `master`, it could be other branch
+      - develop   # Branche de développement
+      - test      # Branche de test
+      - main      # Branche de production
 
 jobs:
   build_and_deploy:
@@ -14,8 +16,7 @@ jobs:
       - name: Set safe directory for Git
         run: git config --global --add safe.directory /github/workspace
 
-
-      # Use GitHub Actions' cache to cache dependencies on servers
+      # Utilisation du cache pour les dépendances
       - uses: actions/cache@v2
         with:
           path: vendor/bundle
@@ -23,15 +24,31 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
 
-      # Use GitHub Deploy Action to build and deploy to Github
+      # Définir la configuration en fonction de la branche (prod, test, dev)
+      - name: Set environment variables
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "JEKYLL_ENV=production" >> $GITHUB_ENV
+            echo "CNAME=blog.sample.com" >> $GITHUB_ENV
+            echo "JEKYLL_CONFIG=_config.yml,_config_prod.yml" >> $GITHUB_ENV
+          elif [ "${{ github.ref }}" == "refs/heads/test" ]; then
+            echo "JEKYLL_ENV=test" >> $GITHUB_ENV
+            echo "CNAME=test.blog.sample.com" >> $GITHUB_ENV
+            echo "JEKYLL_CONFIG=_config.yml,_config_test.yml" >> $GITHUB_ENV
+          else
+            echo "JEKYLL_ENV=development" >> $GITHUB_ENV
+            echo "CNAME=dev.blog.sample.com" >> $GITHUB_ENV
+            echo "JEKYLL_CONFIG=_config.yml,_config_dev.yml" >> $GITHUB_ENV
+          fi
+
+      # Déploiement avec la configuration appropriée
       - uses: jeffreytse/jekyll-deploy-action@v0.6.0
         with:
           provider: 'github'
-          token: ${{ secrets.GITHUB_TOKEN }} # It's your Personal Access Token(PAT)
-          repository: ''             # Default is current repository
-          branch: 'gh-pages'         # Default is gh-pages for github provider
-          jekyll_src: './'           # Default is root directory
-          jekyll_cfg: '_config.yml'  # Default is _config.yml
-          jekyll_baseurl: ''  # Default is empty
-          cname: ''                  # Default is to not use a cname
-          actor: ''                  # Default is the GITHUB_ACTOR
+          token: ${{ secrets.GITHUB_TOKEN }}  # Utilise ton Personal Access Token (PAT)
+          repository: ''                      # Par défaut, le dépôt actuel
+          branch: 'gh-pages'                  # Branche de déploiement, ici gh-pages
+          jekyll_src: './'                    # Répertoire racine du projet Jekyll
+          jekyll_cfg: ${{ env.JEKYLL_CONFIG }}  # Utilisation du fichier de config en fonction de l'environnement
+          cname: ${{ env.CNAME }}              # CNAME selon l'environnement
+          actor: ''                           # Par défaut, l'acteur est GITHUB_ACTOR
